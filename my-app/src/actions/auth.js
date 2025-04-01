@@ -50,6 +50,10 @@ export async function register(state, formData){
     })
     console.log(results)
 
+    //Create session
+    await createSession(results.insertedId)
+
+
     //Redirection
     redirect("/dashboard")
 
