@@ -2,6 +2,8 @@
 
 import { getCollection } from "@/lib/db";
 import { RegisterFormSchema } from "@/lib/rules";
+import bcrypt from "bcrypt"
+import { redirect } from "next/dist/server/api-utils";
 
 export async function register(state, formData){
 
@@ -25,8 +27,30 @@ export async function register(state, formData){
 
     await new Promise(resolve => setTimeout(resolve, 1000));
 
+    //Extracting form fields
     const {email, password} = validatedFields.data;
+
+    //check if dat exists
     const userCollection =  await getCollection('users')
-    console.log(userCollection)
+
+    if(!userCollection) {
+        return {errors: {email:"Server error"}}
+    }
+    const existingUser = await userCollection.findOne({email})
+    if (existingUser) {
+        return {errors: {email: "Email already exists"},};
+    }
+
+    //Hashing pass
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const results = await userCollection.insertOne({
+        email,
+        password: hashedPassword
+    })
+    console.log(results)
+
+    //Redirection
+    redirect("/dashboard")
 
 }
