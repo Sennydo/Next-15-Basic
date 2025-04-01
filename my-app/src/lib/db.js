@@ -1,4 +1,6 @@
+import "server-only"
 import { MongoClient, ServerApiVersion } from "mongodb"
+
 
 if(!process.env.DB_URI){
     throw new Error("Mongo URI not found")

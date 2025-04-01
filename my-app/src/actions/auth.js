@@ -51,7 +51,7 @@ export async function register(state, formData){
     console.log(results)
 
     //Create session
-    await createSession(results.insertedId)
+    await createSession(results.insertedId.toString())
 
 
     //Redirection
