@@ -22,16 +22,10 @@ export async function register(state, formData){
     }
 
     console.log("Register actions \n")
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const confirmPassword = formData.get("confirmPass");
-
-    console.log(email);
-    console.log(password);
-    console.log(confirmPassword);
 
     await new Promise(resolve => setTimeout(resolve, 1000));
 
+    const {email, password} = validatedFields.data;
     const userCollection =  await getCollection('users')
     console.log(userCollection)
 
